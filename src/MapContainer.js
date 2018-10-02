@@ -39,31 +39,30 @@ export class MapContainer extends Component {
         />
         <Marker
           name={"Bittersweet Park"}
-          title={'Bittersweet Park'}
+          title={"Bittersweet Park"}
           position={{
             lat: 40.415543,
             lng: -104.737295
           }}
         />
 
-      <Marker
-        name={"Sanborn Park"}
-        title={'Sanborn Park'}
-        position={{
-          lat: 40.404910,
-          lng: -104.728309
-        }}
-      />
-      <Marker
-        name={"Greeley West Park"}
-        title={'Greeley West Park'}
-        position={{
-          lat: 40.401475,
-          lng: -104.742564
-        }}
-      />
-    </Map>
-
+        <Marker
+          name={"Sanborn Park"}
+          title={"Sanborn Park"}
+          position={{
+            lat: 40.40491,
+            lng: -104.728309
+          }}
+        />
+        <Marker
+          name={"Greeley West Park"}
+          title={"Greeley West Park"}
+          position={{
+            lat: 40.401475,
+            lng: -104.742564
+          }}
+        />
+      </Map>
     );
   }
 }
