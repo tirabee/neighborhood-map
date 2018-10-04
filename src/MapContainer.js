@@ -3,7 +3,12 @@ import { Map, InfoWindow, Marker, GoogleApiWrapper } from "google-maps-react";
 
 export class MapContainer extends Component {
   render() {
+    const style = {
+        width: '50vw',
+        height: '100vh'
+      }
     return (
+      <div id="container">
       <Map
         google={this.props.google}
         zoom={14}
@@ -63,6 +68,7 @@ export class MapContainer extends Component {
           }}
         />
       </Map>
+    </div>
     );
   }
 }
