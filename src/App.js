@@ -9,10 +9,13 @@ class App extends Component {
       venues: [],
       markers: [],
       center: [],
-      zoom: 11
+      zoom: 13
     };
   }
-
+  handleMarkerClick = marker => {
+    marker.isOpen = true;
+    this.setState({ markers: Object.assign(this.state.markers, marker) });
+  };
   componentDidMount() {
     SquareAPI.search({
       near: "Greeley, CO",
