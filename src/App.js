@@ -12,9 +12,24 @@ class App extends Component {
       zoom: 13
     };
   }
+
+  closeAllMarkers = () => {
+    const markers = this.state.markers.map(marker => {
+      marker.isOpen = false;
+      return marker;
+    });
+    this.setState({ markers: Object.assign(this.state.markers, markers) });
+  };
   handleMarkerClick = marker => {
+    this.closeAllMarkers();
     marker.isOpen = true;
+
     this.setState({ markers: Object.assign(this.state.markers, marker) });
+    const venue = this.state.venues.find(venue => venue.id === marker.id);
+    SquareAPI.getVenueDetails(marker.id).then(res => {
+      const newVenue = Object.assign(res.response.venue, venue);
+      this.setState({ venues: this.state.venue, newVenue });
+    });
   };
   componentDidMount() {
     SquareAPI.search({
@@ -40,7 +55,7 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <Map {...this.state} />
+        <Map {...this.state} handleMarkerClick={this.handleMarkerClick} />
       </div>
     );
   }
