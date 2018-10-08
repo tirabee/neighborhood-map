@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import SquareAPI from "./api/";
 
 import {
   withScriptjs,
@@ -15,8 +14,9 @@ const MapComponent = withScriptjs(
       zoom={props.zoom}
       defaultCenter={{
         lat: 40.409934,
-        lng: -104.729065
+        lng: -104.729065,
       }}
+      center= {props.center}
     >
       {props.markers &&
         props.markers.filter(marker => marker.isVisible).map((marker, idx) => {
@@ -27,14 +27,20 @@ const MapComponent = withScriptjs(
               position={{ lat: marker.lat, lng: marker.lng }}
               onClick={() => props.handleMarkerClick(marker)}
             >
-              {marker.isOpen && venueInfo.bestPhoto && (
-                <InfoWindow>
-                  <React.Fragment>
-                    <img src={`${venueInfo.bestPhoto.prefix}200x200{venueInfo.bestPhoto.suffix}`} alt="Venue Photo" />
-                  <p>{venueInfo.name}</p>
-                  </React.Fragment>
-                </InfoWindow>
-              )}
+              {marker.isOpen &&
+                venueInfo.bestPhoto && (
+                  <InfoWindow>
+                    <React.Fragment>
+                      <img
+                        src={`${venueInfo.bestPhoto.prefix}200x200${
+                          venueInfo.bestPhoto.suffix
+                        }`}
+                        alt={venueInfo.name}
+                      />
+                    <p>{venueInfo.name}</p>
+                    </React.Fragment>
+                  </InfoWindow>
+                )}
             </Marker>
           );
         })}
@@ -50,7 +56,7 @@ export default class Map extends Component {
         isMarkerShown
         googleMapURL="https://maps.googleapis.com/maps/api/js?v=3.exp&key=AIzaSyAoGpvMXxTawpEiDCrR95JZBiWcc1eYZt0"
         loadingElement={<div style={{ height: `100%` }} />}
-        containerElement={<div style={{ height: `400px` }} />}
+        containerElement={<div style={{ height: `100%`, width: `75%`}} />}
         mapElement={<div style={{ height: `100%` }} />}
       />
     );

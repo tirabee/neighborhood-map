@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import Map from "./MapContainer";
 import SquareAPI from "./api/";
-
+import Sidebar from "./Sidebar";
+import './App.css';
 class App extends Component {
   constructor() {
     super();
@@ -20,21 +21,22 @@ class App extends Component {
     });
     this.setState({ markers: Object.assign(this.state.markers, markers) });
   };
+
   handleMarkerClick = marker => {
     this.closeAllMarkers();
     marker.isOpen = true;
-
     this.setState({ markers: Object.assign(this.state.markers, marker) });
     const venue = this.state.venues.find(venue => venue.id === marker.id);
+
     SquareAPI.getVenueDetails(marker.id).then(res => {
-      const newVenue = Object.assign(res.response.venue, venue);
-      this.setState({ venues: this.state.venue, newVenue });
+      const newVenue = Object.assign(venue, res.response.venue);
+      this.setState({ venues: Object.assign(this.state.venues, newVenue) });
     });
   };
   componentDidMount() {
     SquareAPI.search({
       near: "Greeley, CO",
-      query: "Park",
+      query: "Pizza",
       limit: 20
     }).then(results => {
       const { venues } = results.response;
@@ -48,13 +50,13 @@ class App extends Component {
           id: venue.id
         };
       });
-      console.log(results);
       this.setState({ venues, center, markers });
     });
   }
   render() {
     return (
       <div className="App">
+        <Sidebar />
         <Map {...this.state} handleMarkerClick={this.handleMarkerClick} />
       </div>
     );
