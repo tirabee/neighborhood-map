@@ -1,3 +1,4 @@
+/*global google*/
 import React, { Component } from "react";
 
 import {
@@ -19,13 +20,14 @@ const MapComponent = withScriptjs(
       center= {props.center}
     >
       {props.markers &&
-        props.markers.filter(marker => marker.isVisible).map((marker, idx) => {
+        props.markers.filter(marker => marker.isVisible).map((marker, idx, arr) => {
           const venueInfo = props.venues.find(venue => venue.id === marker.id);
           return (
             <Marker
               key={idx}
               position={{ lat: marker.lat, lng: marker.lng }}
               onClick={() => props.handleMarkerClick(marker)}
+              animation={arr.length === 1 ? google.maps.Animation.BOUNCE : google.maps.Animation.DROP}
             >
               {marker.isOpen &&
                 venueInfo.bestPhoto && (
@@ -37,7 +39,8 @@ const MapComponent = withScriptjs(
                         }`}
                         alt={venueInfo.name}
                       />
-                    <p>{venueInfo.name}</p>
+                    <h2>{venueInfo.name}</h2>
+                    <p>{venueInfo.location.address}</p>
                     </React.Fragment>
                   </InfoWindow>
                 )}
@@ -56,7 +59,7 @@ export default class Map extends Component {
         isMarkerShown
         googleMapURL="https://maps.googleapis.com/maps/api/js?v=3.exp&key=AIzaSyAoGpvMXxTawpEiDCrR95JZBiWcc1eYZt0"
         loadingElement={<div style={{ height: `100%` }} />}
-        containerElement={<div style={{ height: `100%`, width: `75%`}} />}
+        containerElement={<div className="mapContainer" style={{ height: `100%`}} />}
         mapElement={<div style={{ height: `100%` }} />}
       />
     );

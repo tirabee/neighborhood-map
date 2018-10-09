@@ -3,6 +3,7 @@ import Map from "./MapContainer";
 import SquareAPI from "./api/";
 import Sidebar from "./Sidebar";
 import './App.css';
+import ErrorBoundary from "./ErrorBoundary";
 class App extends Component {
   constructor() {
     super();
@@ -10,9 +11,13 @@ class App extends Component {
       venues: [],
       markers: [],
       center: [],
-      zoom: 13
+      zoom: 13,
+      updateSuperState: obj => {
+        this.setState(obj);
+      }
     };
   }
+
 
   closeAllMarkers = () => {
     const markers = this.state.markers.map(marker => {
@@ -31,13 +36,19 @@ class App extends Component {
     SquareAPI.getVenueDetails(marker.id).then(res => {
       const newVenue = Object.assign(venue, res.response.venue);
       this.setState({ venues: Object.assign(this.state.venues, newVenue) });
+
     });
   };
+
+  handleListItemClick = venue => {
+    const marker = this.state.markers.find(marker => marker.id === venue.id);
+    this.handleMarkerClick(marker);
+  }
   componentDidMount() {
     SquareAPI.search({
       near: "Greeley, CO",
       query: "Pizza",
-      limit: 20
+      limit: 10
     }).then(results => {
       const { venues } = results.response;
       const { center } = results.response.geocode.feature.geometry;
@@ -55,9 +66,11 @@ class App extends Component {
   }
   render() {
     return (
-      <div className="App">
-        <Sidebar />
-        <Map {...this.state} handleMarkerClick={this.handleMarkerClick} />
+      <div className="App" role="main">
+        <ErrorBoundary>
+        <Sidebar {...this.state} handleListItemClick={this.handleListItemClick} aria-label="Venue List" role="navigation" />
+        <Map {...this.state} handleMarkerClick={this.handleMarkerClick} aria-label="Map" />
+        </ErrorBoundary>
       </div>
     );
   }
