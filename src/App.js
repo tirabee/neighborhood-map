@@ -1,7 +1,9 @@
 import React, { Component } from "react";
 import Map from "./MapContainer";
 import SquareAPI from "./api/";
-import Sidebar from "./Sidebar";
+import Drawer from 'react-toolbox/lib/drawer';
+import Button from 'react-toolbox/lib/button/Button';
+
 import './App.css';
 import ErrorBoundary from "./ErrorBoundary";
 class App extends Component {
@@ -64,13 +66,24 @@ class App extends Component {
       this.setState({ venues, center, markers });
     });
   }
+
+  handleToggle = () => {
+  this.setState({active: !this.state.active});
+};
+
   render() {
     return (
       <div className="App" role="main">
-        <ErrorBoundary>
-        <Sidebar {...this.state} handleListItemClick={this.handleListItemClick} aria-label="Venue List" role="navigation" />
+
+
+        <Button label='Show Drawer' raised accent onClick={this.handleToggle} />
+        <Drawer active={this.state.active} onOverlayClick={this.handleToggle}>
+          <h5>This is your Drawer.</h5>
+          <p>You can embed any content you want, for example a Menu.</p>
+        </Drawer>
+
+
         <Map {...this.state} handleMarkerClick={this.handleMarkerClick} aria-label="Map" />
-        </ErrorBoundary>
       </div>
     );
   }
