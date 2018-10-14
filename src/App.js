@@ -1,25 +1,45 @@
 import React, { Component } from "react";
 import Map from "./MapContainer";
 import SquareAPI from "./api/";
-import Drawer from 'react-toolbox/lib/drawer';
-import Button from 'react-toolbox/lib/button/Button';
+import Sidebar from "react-sidebar";
+import SidebarSearch from "./SidebarSearch";
 
-import './App.css';
-import ErrorBoundary from "./ErrorBoundary";
+import "./App.css";
+
+const mql = window.matchMedia(`(min-width: 800px)`);
+
 class App extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       venues: [],
       markers: [],
       center: [],
       zoom: 13,
+      sidebarDocked: mql.matches,
+      sidebarOpen: false,
       updateSuperState: obj => {
         this.setState(obj);
       }
     };
+  
   }
 
+  componentWillMount() {
+    mql.addListener(this.mediaQueryChanged);
+  }
+
+  componentWillUnmount() {
+    mql.removeListener(this.mediaQueryChanged);
+  }
+
+  onSetSidebarOpen(open) {
+    this.setState({ sidebarOpen: open });
+  }
+
+  mediaQueryChanged() {
+    this.setState({ sidebarDocked: mql.matches, sidebarOpen: false });
+  }
 
   closeAllMarkers = () => {
     const markers = this.state.markers.map(marker => {
@@ -38,14 +58,13 @@ class App extends Component {
     SquareAPI.getVenueDetails(marker.id).then(res => {
       const newVenue = Object.assign(venue, res.response.venue);
       this.setState({ venues: Object.assign(this.state.venues, newVenue) });
-
     });
   };
 
   handleListItemClick = venue => {
     const marker = this.state.markers.find(marker => marker.id === venue.id);
     this.handleMarkerClick(marker);
-  }
+  };
   componentDidMount() {
     SquareAPI.search({
       near: "Greeley, CO",
@@ -68,22 +87,24 @@ class App extends Component {
   }
 
   handleToggle = () => {
-  this.setState({active: !this.state.active});
-};
+    this.setState({ active: !this.state.active });
+  };
 
   render() {
     return (
       <div className="App" role="main">
-
-
-        <Button label='Show Drawer' raised accent onClick={this.handleToggle} />
-        <Drawer active={this.state.active} onOverlayClick={this.handleToggle}>
-          <h5>This is your Drawer.</h5>
-          <p>You can embed any content you want, for example a Menu.</p>
-        </Drawer>
-
-
-        <Map {...this.state} handleMarkerClick={this.handleMarkerClick} aria-label="Map" />
+        <Sidebar
+          sidebar={<SidebarSearch />}
+          open={this.state.sidebarOpen}
+          docked={this.state.sidebarDocked}
+          onSetOpen={this.onSetSidebarOpen}
+        >
+          <Map
+            {...this.state}
+            handleMarkerClick={this.handleMarkerClick}
+            aria-label="Map"
+          />
+        </Sidebar>
       </div>
     );
   }

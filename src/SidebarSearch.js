@@ -1,12 +1,15 @@
 import React, { Component } from "react";
 import VenueList from "./VenueList";
-export default class Sidebar extends Component {
+
+export default class SidebarSearch extends Component {
   constructor() {
     super();
     this.state = {
       query: "",
-      venues: []
+      venues: [],
+      sidebarOpen: true,
     };
+
   }
   handleFilterVenues = () => {
     if (this.state.query.trim() !== "") {
@@ -36,7 +39,7 @@ export default class Sidebar extends Component {
   };
   render() {
     return (
-      <div className="sideBar">
+      <div className="sideBarSearch">
         <h1>Nearby Pizza in Greeley, CO!</h1>
         <input role="search" type={"search"} id={"search"} placeholder={"Filter Venues"} onChange={this.handleChange}/>
         <VenueList
