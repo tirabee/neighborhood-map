@@ -6,5 +6,5 @@ To use this app, download or clone the repository, and run `npm install` within 
 
 # Acknowledgements
 Huge thanks to Forrest Walker for his amazing walkthrough for this project: https://www.youtube.com/playlist?list=PL4rQq4MQP1crXuPtruu_eijgOUUXhcUCP
-
+https://www.youtube.com/watch?v=jZZEskrwc4w&t=203s
 This app utilizes the Foursquare API to load locations and info.

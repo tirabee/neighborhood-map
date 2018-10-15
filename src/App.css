@@ -6,15 +6,7 @@
   width: 100vw;
 }
 
-.sideBar {
-  width: 25%;
-  background-color: #0A691A;
-  height: 100vh;
-  overflow-y: scroll;
-}
-.mapContainer {
-  width: 75%;
-}
+
 h1 {
   color: #FFE380;
 }
@@ -42,16 +34,4 @@ li.listItem {
 
 ol.venueList {
   padding: 1rem;
-}
-
-@media (max-width: 700px) {
-
-
-  .sideBar {
-    width: 100%;
-  }
-
-  .mapContainer {
-    width: 100%;
-  }
 }

@@ -8,6 +8,7 @@
     "react": "^16.5.2",
     "react-css-themr": "^2.1.2",
     "react-dom": "^16.5.2",
+    "react-foursquare": "^1.0.3",
     "react-google-maps": "^9.4.5",
     "react-scripts": "1.1.5",
     "react-sidebar": "^3.0.2",

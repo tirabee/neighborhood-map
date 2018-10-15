@@ -4,8 +4,7 @@ export default class VenueList extends Component {
   render() {
     return (
       <ol className="venueList">
-        {this.props.venues && this.props.venues.map((venue, idx) => <ListItem key={idx} {...venue} handleListItemClick={this.props.handleListItemClick} />)}
-
+{this.state.items.map(item=> { return <div key={item.id}>{item.name}</div>})}
       </ol>
     );
   }
