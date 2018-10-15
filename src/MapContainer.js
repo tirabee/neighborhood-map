@@ -17,7 +17,7 @@ const MapComponent = withScriptjs(
         lng: -104.729065
       }}
     >
-      {this.state.items.map(item => {
+      {this.props.items.map(item => {
         return <Marker />;
       })}
     </GoogleMap>
