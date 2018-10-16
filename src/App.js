@@ -29,8 +29,20 @@ class App extends Component {
   }
   componentDidMount() {
     foursquare.venues.getVenues(params).then(res => {
-      this.setState({ items: res.response.venues });
-      console.log(this.state.items);
+      const markers = this.state.items.map(item => {
+        return {
+          lat: this.state.items.location.lat,
+          lng: this.state.items.location.lng,
+          title: this.state.item.name,
+          isOpen: false,
+          isVisible: true,
+          id: this.state.items.id
+        };
+      });
+      this.setState({
+        items: res.response.venues,
+        markers: res.response.venues
+      });
     });
   }
   componentWillMount() {
@@ -48,9 +60,21 @@ class App extends Component {
   mediaQueryChanged() {
     this.setState({ sidebarDocked: mql.matches, sidebarOpen: false });
   }
-  addMarker = (marker) => {
-    this.state.markers.push(marker)
-  }
+
+  closeAllMarkers = () => {
+    const markers = this.state.markers.map(marker => {
+      marker.isOpen = false;
+      return marker;
+    });
+    this.setState({ markers: Object.assign(this.state.markers, markers) });
+  };
+
+  handleMarkerClick = marker => {
+    this.closeAllMarkers();
+    marker.isOpen = true;
+    this.setState({ markers: Object.assign(this.state.markers, marker) });
+    const venue = this.state.venues.find(venue => venue.id === marker.id);
+  };
   render() {
     return (
       <div className="App" role="main">
@@ -60,7 +84,7 @@ class App extends Component {
           docked={this.state.sidebarDocked}
           onSetOpen={this.onSetSidebarOpen}
         >
-          <Map aria-label="Map" items={this.state.items} />
+          <Map aria-label="Map" items={this.state.items} markers={this.state.markers} />
         </Sidebar>
       </div>
     );
