@@ -17,24 +17,25 @@ const MapComponent = withScriptjs(
         lng: -104.729065
       }}
     >
-      {props.items &&
-        props.items
-        .map(item => {
+      {props.markers &&
+        props.markers
+        .filter(marker => marker.isVisible)
+        .map(marker => {
           return (
             <Marker
               position={{
-                lat: item.location.lat,
-                lng: item.location.lng
+                lat: marker.lat,
+                lng: marker.lng
               }}
-              onClick={() => props.handleMarkerClick(item)}
-              title={item.name}
-              key={item.id}
+              onClick={() => props.handleMarkerClick(marker)}
+              title={marker.name}
+              key={marker.id}
             >
-              {props.isOpen && (
+              {marker.isOpen && (
                 <InfoWindow>
-                  <div>
-                    <h1>{item.name}</h1>
-                    <h2>{item.location.address}</h2>
+                  <div aria-label="Location Information">
+                    <h1>{marker.name}</h1>
+                    <h2>{marker.address}</h2>
                   </div>
                 </InfoWindow>
               )}

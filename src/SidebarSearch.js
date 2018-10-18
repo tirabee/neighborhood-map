@@ -4,26 +4,28 @@ export default class SidebarSearch extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      query: ""
+      query: "",
+      items: []
     };
   }
+
   handleFilterVenues = () => {
     if (this.state.query.trim() !== "") {
-      const venues = this.props.items.filter(venue =>
-        venue.name.toLowerCase().includes(this.state.query.toLowerCase())
+      const items = this.props.items.filter(item =>
+        item.name.toLowerCase().includes(this.state.query.toLowerCase())
       );
-      return venues;
+      return items;
     }
-    return this.props.venues;
+    return this.props.items;
   };
+
   handleChange = e => {
     this.setState({ query: e.target.value });
-
-    const markers = this.props.items.map(venue => {
-      const isMatched = venue.name
+    const markers = this.props.items.map(item => {
+      const isMatched = item.name
         .toLowerCase()
         .includes(e.target.value.toLowerCase());
-      const marker = this.props.markers.find(marker => marker.id === venue.id);
+      const marker = this.props.markers.find(marker => marker.id === item.id);
       if (isMatched) {
         marker.isVisible = true;
       } else {
@@ -31,6 +33,7 @@ export default class SidebarSearch extends Component {
       }
       return marker;
     });
+    this.props.updateSuperState({ markers });
   };
 
   render() {
@@ -45,11 +48,17 @@ export default class SidebarSearch extends Component {
           onChange={this.handleChange}
         />
         <div>Items:</div>
-        <ol>
-          {this.props.items.map(item => {
-            return <li key={item.id}>{item.name}</li>;
-          })}
-        </ol>
+        <ul venues={this.handleFilterVenues()}>
+          {this.props.items &&
+            this.props.items.map(item => (
+              <li
+                onClick={() => this.props.handleListItemClick(this.props)}
+                key={item.id}
+              >
+                {item.name} \\ {item.hereNow.count}
+              </li>
+            ))}
+        </ul>
       </div>
     );
   }
