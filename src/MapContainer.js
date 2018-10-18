@@ -18,17 +18,27 @@ const MapComponent = withScriptjs(
       }}
     >
       {props.items &&
-        props.items.filter(marker => marker.isVisible).map(marker => {
-          const itemInfo = props.items.find(item => item.id === marker.id);
+        props.items
+        .map(item => {
           return (
             <Marker
               position={{
-                lat: props.items.location.lat,
-                lng: props.items.location.lng
+                lat: item.location.lat,
+                lng: item.location.lng
               }}
-              title={props.items.name}
-              key={props.items.id}
-            />
+              onClick={() => props.handleMarkerClick(item)}
+              title={item.name}
+              key={item.id}
+            >
+              {props.isOpen && (
+                <InfoWindow>
+                  <div>
+                    <h1>{item.name}</h1>
+                    <h2>{item.location.address}</h2>
+                  </div>
+                </InfoWindow>
+              )}
+            </Marker>
           );
         })}
     </GoogleMap>
@@ -39,6 +49,7 @@ export default class Map extends Component {
   render() {
     return (
       <MapComponent
+        {...this.props}
         isMarkerShown
         googleMapURL="https://maps.googleapis.com/maps/api/js?v=3.exp&key=AIzaSyAoGpvMXxTawpEiDCrR95JZBiWcc1eYZt0"
         loadingElement={<div style={{ height: `100%` }} />}

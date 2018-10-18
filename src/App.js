@@ -15,37 +15,23 @@ var params = {
   query: "Pizza"
 };
 class App extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       items: [],
       zoom: 13,
       sidebarDocked: mql.matches,
-      sidebarOpen: false,
-      markers: []
+      sidebarOpen: false
     };
     this.mediaQueryChanged = this.mediaQueryChanged.bind(this);
     this.onSetSidebarOpen = this.onSetSidebarOpen.bind(this);
   }
   componentDidMount() {
     foursquare.venues.getVenues(params).then(res => {
-      const markers = this.state.items.map(item => {
-        return {
-          lat: this.state.items.location.lat,
-          lng: this.state.items.location.lng,
-          title: this.state.item.name,
-          isOpen: false,
-          isVisible: true,
-          id: this.state.items.id
-        };
-      });
-      this.setState({
-        items: res.response.venues,
-        markers: res.response.venues
-      });
+      this.setState({ items: res.response.venues });
     });
   }
-  componentWillMount() {
+  ComponentWillMount() {
     mql.addListener(this.mediaQueryChanged);
   }
 
@@ -62,18 +48,16 @@ class App extends Component {
   }
 
   closeAllMarkers = () => {
-    const markers = this.state.markers.map(marker => {
-      marker.isOpen = false;
-      return marker;
+    const markers = this.state.items.map(item => {
+      item.isOpen = false;
+      return item;
     });
-    this.setState({ markers: Object.assign(this.state.markers, markers) });
   };
 
   handleMarkerClick = marker => {
     this.closeAllMarkers();
     marker.isOpen = true;
-    this.setState({ markers: Object.assign(this.state.markers, marker) });
-    const venue = this.state.venues.find(venue => venue.id === marker.id);
+    this.setState({ markers: Object.assign(this.state.items, marker) });
   };
   render() {
     return (
@@ -84,7 +68,11 @@ class App extends Component {
           docked={this.state.sidebarDocked}
           onSetOpen={this.onSetSidebarOpen}
         >
-          <Map aria-label="Map" items={this.state.items} markers={this.state.markers} />
+          <Map
+            aria-label="Map"
+            items={this.state.items}
+            handleMarkerClick={this.handleMarkerClick}
+          />
         </Sidebar>
       </div>
     );

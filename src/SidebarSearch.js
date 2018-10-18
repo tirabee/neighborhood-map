@@ -1,7 +1,12 @@
 import React, { Component } from "react";
 
 export default class SidebarSearch extends Component {
-
+  constructor(props) {
+    super(props);
+    this.state = {
+      query: ""
+    };
+  }
   handleFilterVenues = () => {
     if (this.state.query.trim() !== "") {
       const venues = this.props.items.filter(venue =>
