@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import List from "./List";
+
 export default class SidebarSearch extends Component {
   constructor(props) {
     super(props);
@@ -7,7 +8,7 @@ export default class SidebarSearch extends Component {
       query: ""
     };
   }
-
+  //filters venues using the search input
   handleFilterVenues = () => {
     if (this.state.query.trim() !== "") {
       const items = this.props.items.filter(item =>
@@ -38,7 +39,7 @@ export default class SidebarSearch extends Component {
   render() {
     return (
       <div className="sideBar">
-        <h1>Nearby Pizza in Greeley, CO!</h1>
+        <h1 className="heading">Nearby Pizza in Greeley, CO!</h1>
         <input
           role="search"
           type={"search"}

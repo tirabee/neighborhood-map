@@ -2,20 +2,70 @@
   display: flex;
   flex-flow: row wrap;
   text-align: center;
-  height: 100vh;
-  width: 100vw;
+  height: 100%;
+  width: 100%;
+}
+/* Position and sizing of burger button */
+.bm-burger-button {
+  position: fixed;
+  width: 36px;
+  height: 30px;
+  left: 36px;
+  top: 60px;
 }
 
+/* Color/shape of burger icon bars */
+.bm-burger-bars {
+  background: #373a47;
+}
 
-.mapContainer {
-  width:100%;
+/* Position and sizing of clickable cross button */
+.bm-cross-button {
+  height: 24px;
+  width: 24px;
+}
+
+/* Color/shape of close button cross */
+.bm-cross {
+  background: #bdc3c7;
+}
+
+/* General sidebar styles */
+.bm-menu {
+  background: #373a47;
+  padding: 2.5em 1.5em 0;
+  font-size: 1.15em;
+}
+
+/* Morph shape necessary with bubble or elastic */
+.bm-morph-shape {
+  fill: #373a47;
+}
+
+/* Wrapper for item list */
+.bm-item-list {
+  color: #b8b7ad;
+  padding: 0.8em;
+}
+
+/* Individual item */
+.bm-item {
+  display: inline-block;
+}
+
+/* Styling of overlay */
+.bm-overlay {
+  background: rgba(0, 0, 0, 0.2);
+}
+h1.heading {
+  color: #fff;
 }
 h1 {
-  color: #FFE380;
+  color: #000;
 }
 
 input#search {
-  width: 100%;
+  width: 85%;
   height: 2rem;
   font-size: 1rem;
   margin-top: 10%;
@@ -25,16 +75,12 @@ input#search {
 li.listItem {
   list-style: none;
   font-size: 1rem;
-  padding: .5rem;
+  padding: 0.5rem;
   margin-top: 1rem;
   cursor: pointer;
-  background: #72B832;
+  background: #72b832;
   color: white;
   font-weight: bold;
   display: flex;
   align-items: center;
-}
-
-ol.venueList {
-  padding: 1rem;
 }

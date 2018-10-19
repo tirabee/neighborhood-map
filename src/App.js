@@ -1,11 +1,11 @@
+/*global google*/
 import React, { Component } from "react";
 import Map from "./MapContainer";
-import Sidebar from "react-sidebar";
+import { slide as Menu } from "react-burger-menu";
 import SidebarSearch from "./SidebarSearch";
-
+import ErrorBoundary from "./ErrorBoundary";
 import "./App.css";
 
-const mql = window.matchMedia(`(min-width: 800px)`);
 var foursquare = require("react-foursquare")({
   clientID: "YXOHYK4SXRTDPPFVU5AGRE3OS2P5IPQTCLCXSXTHKTCHFYRW",
   clientSecret: "YMSLLPRSPAHAAPMJB1FDBF5LQXUMXK0BEOFPKQFPCZHPJZN4"
@@ -14,6 +14,7 @@ var params = {
   ll: "40.409934,-104.729065",
   query: "Pizza"
 };
+
 class App extends Component {
   constructor(props) {
     super(props);
@@ -21,48 +22,37 @@ class App extends Component {
       items: [],
       markers: [],
       zoom: 13,
-      sidebarDocked: mql.matches,
-      sidebarOpen: false,
       updateSuperState: obj => {
         this.setState(obj);
       }
     };
-    this.mediaQueryChanged = this.mediaQueryChanged.bind(this);
-    this.onSetSidebarOpen = this.onSetSidebarOpen.bind(this);
   }
+  // Pulls info from Foursquare API
   componentDidMount() {
-    foursquare.venues.getVenues(params).then(res => {
-      const markers = res.response.venues.map(venue => {
-        return {
-          lat: venue.location.lat,
-          lng: venue.location.lng,
-          title: venue.name,
-          isOpen: false,
-          isVisible: true,
-          id: venue.id,
-          name: venue.name,
-          address: venue.location.address
-        };
+    foursquare.venues
+      .getVenues(params)
+      .then(res => {
+        const markers = res.response.venues.map(venue => {
+          return {
+            lat: venue.location.lat,
+            lng: venue.location.lng,
+            title: venue.name,
+            isOpen: false,
+            isVisible: true,
+            id: venue.id,
+            name: venue.name,
+            address: venue.location.address
+          };
+        });
+        this.setState({ items: res.response.venues, markers });
+      })
+      .catch(error => {
+        window.alert("Error getting data from FourSquare. " + error.message);
+        console.log(error);
       });
-      this.setState({ items: res.response.venues, markers });
-    });
-  }
-  ComponentWillMount() {
-    mql.addListener(this.mediaQueryChanged);
   }
 
-  componentWillUnmount() {
-    mql.removeListener(this.mediaQueryChanged);
-  }
-
-  onSetSidebarOpen(open) {
-    this.setState({ sidebarOpen: open });
-  }
-
-  mediaQueryChanged() {
-    this.setState({ sidebarDocked: mql.matches, sidebarOpen: false });
-  }
-
+  //Closes All Open Markers
   closeAllMarkers = () => {
     const markers = this.state.markers.map(marker => {
       marker.isOpen = false;
@@ -76,39 +66,37 @@ class App extends Component {
     marker.isOpen = true;
     this.setState({ markers: Object.assign(this.state.markers, marker) });
     const item = this.state.items.find(item => item.id === marker.id);
-
+    item.animation = 1;
+    marker.animation = 1;
     foursquare.venues.getVenues(params).then(res => {
       const newVenue = Object.assign(item, res.response.venue);
       this.setState({ items: Object.assign(this.state.items, newVenue) });
-      console.log(newVenue);
     });
   };
-
+  //Shows marker of item clicked on the list of locations.
   handleListItemClick = item => {
     const marker = this.state.markers.find(marker => marker.id === item.id);
     this.handleMarkerClick(marker);
+    console.log(marker);
   };
 
   render() {
     return (
       <div className="App" role="main">
-        <Sidebar
-          sidebar={
+        <ErrorBoundary>
+          <Menu width={"300"}>
             <SidebarSearch
               {...this.state}
               handleListItemClick={this.handleListItemClick}
             />
-          }
-          open={this.state.sidebarOpen}
-          docked={this.state.sidebarDocked}
-          onSetOpen={this.onSetSidebarOpen}
-        >
+          </Menu>
+
           <Map
             aria-label="Map"
             {...this.state}
             handleMarkerClick={this.handleMarkerClick}
           />
-        </Sidebar>
+        </ErrorBoundary>
       </div>
     );
   }

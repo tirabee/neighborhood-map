@@ -19,29 +19,35 @@ const MapComponent = withScriptjs(
     >
       {props.markers &&
         props.markers
-        .filter(marker => marker.isVisible)
-        .map(marker => {
-          return (
-            <Marker
-              position={{
-                lat: marker.lat,
-                lng: marker.lng
-              }}
-              onClick={() => props.handleMarkerClick(marker)}
-              title={marker.name}
-              key={marker.id}
-            >
-              {marker.isOpen && (
-                <InfoWindow>
-                  <div aria-label="Location Information">
-                    <h1>{marker.name}</h1>
-                    <h2>{marker.address}</h2>
-                  </div>
-                </InfoWindow>
-              )}
-            </Marker>
-          );
-        })}
+          .filter(marker => marker.isVisible)
+          .map((marker, idx, arr) => {
+            return (
+              <Marker
+                tabIndex="1"
+                position={{
+                  lat: marker.lat,
+                  lng: marker.lng
+                }}
+                onClick={() => props.handleMarkerClick(marker)}
+                title={marker.name}
+                key={idx}
+                animation={
+                  arr.length < 4
+                    ? window.google.maps.Animation.BOUNCE
+                    : window.google.maps.Animation.DROP
+                }
+              >
+                {marker.isOpen && (
+                  <InfoWindow>
+                    <div aria-label="Location Information">
+                      <h1>{marker.name}</h1>
+                      <h2>{marker.address}</h2>
+                    </div>
+                  </InfoWindow>
+                )}
+              </Marker>
+            );
+          })}
     </GoogleMap>
   ))
 );
@@ -54,7 +60,7 @@ export default class Map extends Component {
         isMarkerShown
         googleMapURL="https://maps.googleapis.com/maps/api/js?v=3.exp&key=AIzaSyAoGpvMXxTawpEiDCrR95JZBiWcc1eYZt0"
         loadingElement={<div style={{ height: `100%` }} />}
-        containerElement={<div style={{ height: `100%` }} />}
+        containerElement={<div style={{ height: ` 1000px`, width: `100%` }} />}
         mapElement={<div style={{ height: `100%` }} />}
       />
     );
