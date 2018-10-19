@@ -1,13 +1,24 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
+import ListItem from "./ListItem";
 
-export default class List extends Component {
+class List extends Component {
   render() {
-    return(
-      <div>
-              <div>Items:</div>
-              { this.state.items.map(item=> { return <div key={item.id}>{item.name}</div>}) }
-          </div>
 
-)
+      return (
+        <div>
+          {this.props.items &&
+            this.props.items.map((item, idx) => (
+              <ListItem
+                key={idx}
+                {...item}
+                handleListItemClick={this.props.handleListItemClick}
+                items = {this.handleFilterVenues()}
+              />
+            ))}
+        </div>
+      );
+    };
   }
-}
+
+
+export default List;

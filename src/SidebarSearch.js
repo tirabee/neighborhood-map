@@ -1,11 +1,10 @@
 import React, { Component } from "react";
-
+import List from "./List";
 export default class SidebarSearch extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      query: "",
-      items: []
+      query: ""
     };
   }
 
@@ -47,18 +46,11 @@ export default class SidebarSearch extends Component {
           placeholder={"Filter Venues"}
           onChange={this.handleChange}
         />
-        <div>Items:</div>
-        <ul venues={this.handleFilterVenues()}>
-          {this.props.items &&
-            this.props.items.map(item => (
-              <li
-                onClick={() => this.props.handleListItemClick(this.props)}
-                key={item.id}
-              >
-                {item.name} \\ {item.hereNow.count}
-              </li>
-            ))}
-        </ul>
+        <List
+          {...this.props}
+          items={this.handleFilterVenues()}
+          handleListItemClick={this.props.handleListItemClick}
+        />
       </div>
     );
   }

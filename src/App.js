@@ -44,7 +44,6 @@ class App extends Component {
           address: venue.location.address
         };
       });
-      console.log(res);
       this.setState({ items: res.response.venues, markers });
     });
   }
@@ -77,12 +76,17 @@ class App extends Component {
     marker.isOpen = true;
     this.setState({ markers: Object.assign(this.state.markers, marker) });
     const item = this.state.items.find(item => item.id === marker.id);
+
+    foursquare.venues.getVenues(params).then(res => {
+      const newVenue = Object.assign(item, res.response.venue);
+      this.setState({ items: Object.assign(this.state.items, newVenue) });
+      console.log(newVenue);
+    });
   };
 
   handleListItemClick = item => {
     const marker = this.state.markers.find(marker => marker.id === item.id);
     this.handleMarkerClick(marker);
-    console.log(item);
   };
 
   render() {
