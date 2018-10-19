@@ -9,6 +9,7 @@ export default class SidebarSearch extends Component {
     };
   }
   //filters venues using the search input
+  // credit to Forrest Walker for these filtering methods. https://www.youtube.com/playlist?list=PL4rQq4MQP1crXuPtruu_eijgOUUXhcUCP
   handleFilterVenues = () => {
     if (this.state.query.trim() !== "") {
       const items = this.props.items.filter(item =>

@@ -51,8 +51,8 @@ class App extends Component {
         console.log(error);
       });
   }
-
-  //Closes All Open Markers
+  // Credit to Forrest Walker for these handler functions! https://www.youtube.com/playlist?list=PL4rQq4MQP1crXuPtruu_eijgOUUXhcUCP
+  // Closes All Open Markers
   closeAllMarkers = () => {
     const markers = this.state.markers.map(marker => {
       marker.isOpen = false;
