@@ -41,6 +41,7 @@ export default class SidebarSearch extends Component {
     return (
       <div className="sideBar">
         <h1 className="heading">Nearby Pizza in Greeley, CO!</h1>
+        <h2 className="heading">Location data by Foursquare</h2>
         <input
           role="search"
           type={"search"}

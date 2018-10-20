@@ -60,6 +60,10 @@
 h1.heading {
   color: #fff;
 }
+h2.heading {
+  color: #fff;
+  font-size: .75rem;
+}
 h1 {
   color: #000;
 }
