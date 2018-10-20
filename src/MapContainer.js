@@ -32,7 +32,7 @@ const MapComponent = withScriptjs(
                 title={marker.name}
                 key={idx}
                 animation={
-                  arr.length < 4
+                  marker.isOpen === true
                     ? window.google.maps.Animation.BOUNCE
                     : window.google.maps.Animation.DROP
                 }
